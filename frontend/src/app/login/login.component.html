@@ -1,4 +1,3 @@
-<!-- Include Font Awesome in your project -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <div class="login-container">
@@ -7,46 +6,47 @@
         <h2>Login</h2>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <div>
-                <label for="username">Username</label>
-                <input id="username" formControlName="username" type="text" placeholder="Username" required />
+                <label for="email">อีเมล</label>
+                <input id="email" formControlName="email" type="email" placeholder="อีเมล" required />
             </div>
 
             <div>
-                <label for="password">Password</label>
-                <input id="password" formControlName="password" type="password" placeholder="Password" required />
+                <label for="password">รหัสผ่าน</label>
+                <input id="password" formControlName="password" type="password" placeholder="รหัสผ่าน" required />
             </div>
 
-            <button type="submit">Login</button>
+            <button type="submit">เข้าสู่ระบบ</button>
 
             <!-- Display error message if present -->
             <div *ngIf="errorMessage">{{ errorMessage }}</div>
         </form>
 
         <!-- Change buttons to text links -->
-        <a routerLink="/register" class="link-button">Register</a>
-        <a routerLink="/forgot-password" class="link-button">Forgot Password?</a> <!-- Updated link -->
+        <a routerLink="/register" class="link-button">สมัครสมาชิก</a>
+        <a routerLink="/forgot-password" class="link-button">ลืมรหัสผ่าน?</a> <!-- Updated link -->
 
         <div *ngIf="showRegisterForm">
-            <h3>Register</h3>
+            <h3>สมัครสมาชิก</h3>
             <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
                 <div>
-                    <label for="registerUsername">Username</label>
-                    <input id="registerUsername" formControlName="username" type="text" placeholder="Username" required />
+                    <label for="registerEmail">อีเมล</label>
+                    <input id="registerEmail" formControlName="email" type="email" placeholder="อีเมล" required />
                 </div>
 
                 <div>
-                    <label for="registerPassword">Password</label>
-                    <input id="registerPassword" formControlName="password" type="password" placeholder="Password" required />
+                    <label for="registerPassword">รหัสผ่าน</label>
+                    <input id="registerPassword" formControlName="password" type="password" placeholder="รหัสผ่าน"
+                        required />
                 </div>
 
-                <button type="submit">Register</button>
+                <button type="submit">สมัครสมาชิก</button>
                 <div *ngIf="errorMessage">{{ errorMessage }}</div>
             </form>
         </div>
 
         <div *ngIf="showForgotPassword">
-            <h3>Forgot Password</h3>
-            <p>Please contact support to reset your password.</p>
+            <h3>ลืมรหัสผ่าน</h3>
+            <p>กรุณาติดต่อฝ่ายสนับสนุนเพื่อรีเซ็ตรหัสผ่านของคุณ</p>
         </div>
     </div>
 </div>

@@ -9,6 +9,7 @@ require('dotenv').config();  // โหลด environment variables
 // นำเข้า routes
 const indexRouter = require('./routes/indexRoutes');
 const registerRoutes = require('./routes/registerRoutes');
+const loginRoutes = require('./routes/loginRoutes');
 
 // สร้างแอป Express
 const app = express();
@@ -24,6 +25,7 @@ app.use(cors());
 // Routes
 app.use('/', indexRouter);
 app.use('/api/register', registerRoutes); // ให้แน่ใจว่ากำหนดเป็น /api/register
+app.use('/api/login', loginRoutes); // ให้แน่ใจว่ากำหนดเป็น /api/login
 
 // จัดการข้อผิดพลาด 404
 app.use((req, res, next) => {

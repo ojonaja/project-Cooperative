@@ -1,3 +1,4 @@
+// register component .ts
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RegisterService } from '../services/register.service';
@@ -37,7 +38,7 @@ export class RegisterComponent implements OnInit {
       this.registerService.registerMember(memberData).subscribe(
         response => {
           console.log('Registration successful:', response);
-          this.router.navigate(['/success']);
+          this.router.navigate(['/home']);
         },
         error => {
           console.error('Registration failed:', error);

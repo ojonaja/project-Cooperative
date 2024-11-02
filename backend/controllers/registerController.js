@@ -1,5 +1,6 @@
 // controllers/registerController.js
-const dbconfig = require('../config/dbconfig');
+const sql = require('mssql');
+const { sqlConfig } = require('../config/dbconfig');
 
 const registerMember = async (req, res) => {
     const { name, address, age, idCard, phone, email, password } = req.body;

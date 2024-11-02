@@ -22,28 +22,28 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]], // เปลี่ยน username เป็น email
       password: ['', Validators.required],
     });
 
     this.registerForm = this.fb.group({
-      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]], // เปลี่ยน username เป็น email
       password: ['', Validators.required],
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const { username, password } = this.loginForm.value;
-      this.authService.login(username, password).subscribe(
+      const { email, password } = this.loginForm.value; // ใช้ email แทน username
+      this.authService.login(email, password).subscribe(
         (response: any) => {
           localStorage.setItem('user', JSON.stringify(response));
-          this.router.navigate(['/dashboard']); // Change this to your home route
+          this.router.navigate(['/home']); // Change this to your home route
         },
         (error: HttpErrorResponse) => {
-          this.errorMessage = 'Login failed. Please check your username and password.';
+          this.errorMessage = 'เข้าสู่ระบบล้มเหลว กรุณาตรวจสอบอีเมลและรหัสผ่านของคุณ';
         }
       );
     }
@@ -51,14 +51,14 @@ export class LoginComponent implements OnInit {
 
   onRegister() {
     if (this.registerForm.valid) {
-      const { username, password } = this.registerForm.value;
-      this.authService.register(username, password).subscribe(
+      const { email, password } = this.registerForm.value; // ใช้ email แทน username
+      this.authService.register(email, password).subscribe(
         (response: any) => {
-          this.errorMessage = 'Registration successful!';
-          this.showRegisterForm = false; // Close registration form
+          this.errorMessage = 'สมัครสมาชิกสำเร็จ!';
+          this.showRegisterForm = false; // ปิดฟอร์มสมัครสมาชิก
         },
         (error: HttpErrorResponse) => {
-          this.errorMessage = 'Registration failed. Please try again.';
+          this.errorMessage = 'สมัครสมาชิกล้มเหลว กรุณาลองใหม่อีกครั้ง';
         }
       );
     }
@@ -66,11 +66,11 @@ export class LoginComponent implements OnInit {
 
   toggleRegisterForm() {
     this.showRegisterForm = !this.showRegisterForm;
-    this.showForgotPassword = false; // Close forgot password form
+    this.showForgotPassword = false; // ปิดฟอร์มลืมรหัสผ่าน
   }
 
   toggleForgotPassword() {
     this.showForgotPassword = !this.showForgotPassword;
-    this.showRegisterForm = false; // Close registration form
+    this.showRegisterForm = false; // ปิดฟอร์มสมัครสมาชิก
   }
 }
