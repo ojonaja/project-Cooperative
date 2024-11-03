@@ -34,9 +34,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void { }
 
+  // login.component.ts
   onSubmit() {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value; // ใช้ email แทน username
+      const { email, password } = this.loginForm.value;
       this.authService.login(email, password).subscribe(
         (response: any) => {
           localStorage.setItem('user', JSON.stringify(response));

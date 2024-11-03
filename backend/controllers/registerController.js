@@ -1,11 +1,15 @@
 // controllers/registerController.js
 const sql = require('mssql');
+const bcrypt = require('bcrypt');
 const { sqlConfig } = require('../config/dbconfig');
 
 const registerMember = async (req, res) => {
     const { name, address, age, idCard, phone, email, password } = req.body;
 
     try {
+        // เข้ารหัสรหัสผ่าน
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         let pool = await sql.connect(sqlConfig);
         await pool.request()
             .input('name', sql.NVarChar, name)
@@ -14,7 +18,7 @@ const registerMember = async (req, res) => {
             .input('idCard', sql.NVarChar, idCard)
             .input('phone', sql.NVarChar, phone)
             .input('email', sql.NVarChar, email)
-            .input('password', sql.NVarChar, password) // ควรจะทำการเข้ารหัสก่อนถ้ามีการจัดเก็บ
+            .input('password', sql.NVarChar, hashedPassword) // ใช้รหัสผ่านที่เข้ารหัสแล้ว
             .query(`INSERT INTO Members (name, address, age, idCard, phone, email, password)
                    VALUES (@name, @address, @age, @idCard, @phone, @email, @password)`);
 

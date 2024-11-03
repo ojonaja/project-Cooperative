@@ -13,16 +13,16 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   // สำหรับเข้าสู่ระบบ
-  login(username: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, { username, password })
+  login(email: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/login`, { email, password })
       .pipe(
         catchError(this.handleError)
       );
   }
 
   // สำหรับลงทะเบียนผู้ใช้ใหม่
-  register(username: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/register`, { username, password })
+  register(email: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/register`, { email, password })
       .pipe(
         catchError(this.handleError)
       );

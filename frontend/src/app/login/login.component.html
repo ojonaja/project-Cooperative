@@ -24,29 +24,5 @@
         <!-- Change buttons to text links -->
         <a routerLink="/register" class="link-button">สมัครสมาชิก</a>
         <a routerLink="/forgot-password" class="link-button">ลืมรหัสผ่าน?</a> <!-- Updated link -->
-
-        <div *ngIf="showRegisterForm">
-            <h3>สมัครสมาชิก</h3>
-            <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
-                <div>
-                    <label for="registerEmail">อีเมล</label>
-                    <input id="registerEmail" formControlName="email" type="email" placeholder="อีเมล" required />
-                </div>
-
-                <div>
-                    <label for="registerPassword">รหัสผ่าน</label>
-                    <input id="registerPassword" formControlName="password" type="password" placeholder="รหัสผ่าน"
-                        required />
-                </div>
-
-                <button type="submit">สมัครสมาชิก</button>
-                <div *ngIf="errorMessage">{{ errorMessage }}</div>
-            </form>
-        </div>
-
-        <div *ngIf="showForgotPassword">
-            <h3>ลืมรหัสผ่าน</h3>
-            <p>กรุณาติดต่อฝ่ายสนับสนุนเพื่อรีเซ็ตรหัสผ่านของคุณ</p>
-        </div>
     </div>
 </div>
