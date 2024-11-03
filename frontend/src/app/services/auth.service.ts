@@ -29,7 +29,7 @@ export class AuthService {
   }
 
   // สำหรับการส่งลิงก์รีเซ็ตรหัสผ่านไปยังอีเมลของผู้ใช้
-  sendResetPassword(email: string): Observable<any> {
+  sendResetPassword(email: string, newPassword: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/forgot-password`, { email })
       .pipe(
         catchError(this.handleError)

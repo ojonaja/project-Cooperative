@@ -1,39 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ProfileService } from '../services/profile.service';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
 })
-export class ProfileComponent {
-  userId: string;
-  user: any;
-  editUser: any;
+export class ProfileComponent implements OnInit {
+  profile: any;
 
-  constructor() {
-    this.userId = '0001'; // เปลี่ยนเป็นการดึงจาก API หรือ Service ในอนาคต
-    this.user = {
-      name: 'สมชาย',
-      lastname: 'ใจดี',
-      citizenId: '1234567890123',
-      accountNumber: '123-456-789',
-      dob: '1990-01-01',
-      phone: '0812345678',
-      email: 'somchai@example.com',
-      username: 'somchai123',
-      password: 'password123'
-    };
-    this.editUser = { ...this.user };
-  }
+  constructor(private profileService: ProfileService) {} // ตรวจสอบการตั้งค่าการ inject ตรงนี้
 
   ngOnInit(): void {
-    // ถ้ามีการดึงข้อมูลจาก API สามารถทำได้ที่นี่
-  }
-
-  saveChanges(): void {
-    this.user = {
-      ...this.editUser,
-      accountNumber: this.user.accountNumber
-    };
+    const userId = 1;
+    this.profileService.getProfile(userId).subscribe(
+      (data) => (this.profile = data),
+      (error) => console.log(error)
+    );
   }
 }
