@@ -1,16 +1,14 @@
-// controllers/loginController.js
 const sql = require('mssql');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const { sqlConfig } = require('../config/dbconfig');
 
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
-    console.log('Login attempt with email:', email); // Log the email
-
     try {
         let pool = await sql.connect(sqlConfig);
-        const result = await pool.request()
+        let result = await pool.request()
             .input('email', sql.NVarChar, email)
             .query(`SELECT * FROM Members WHERE email = @email`);
 
@@ -19,16 +17,19 @@ const loginUser = async (req, res) => {
             const passwordMatch = await bcrypt.compare(password, user.password);
 
             if (passwordMatch) {
-                res.status(200).json({ message: 'Login successful', user });
+                const token = jwt.sign({ idCard: user.idCard, email: user.email }, 'your_jwt_secret', { expiresIn: '1h' });
+                res.status(200).json({ token });
             } else {
-                res.status(401).json({ message: 'Invalid email or password' });
+                res.status(401).json({ message: 'Invalid credentials' });
             }
         } else {
-            res.status(401).json({ message: 'Invalid email or password' });
+            res.status(401).json({ message: 'Invalid credentials' });
         }
     } catch (err) {
         console.error('Database error:', err);
         res.status(500).json({ message: 'Internal server error' });
+    } finally {
+        sql.close();
     }
 };
 

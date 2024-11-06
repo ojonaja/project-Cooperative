@@ -1,59 +1,10 @@
-<form [formGroup]="openAccountForm" (ngSubmit)="onSubmit()" class="container mt-4">
-  <h2 class="text-center mb-4">เปิดบัญชีเงินฝากออมทรัพย์</h2>
-
-  <!-- แสดงข้อความสำเร็จ -->
-  <div *ngIf="successMessage" class="alert alert-success text-center">
-    {{ successMessage }}
-  </div>
-
-  <div class="card">
-    <div class="card-body">
-      <!-- ฟอร์มข้อมูลตามที่คุณมีอยู่แล้ว -->
-      <div class="form-group">
-        <label for="fullName">ชื่อ-นามสกุล</label>
-        <input type="text" id="fullName" formControlName="fullName" class="form-control" required>
-        <div *ngIf="openAccountForm.get('fullName')?.invalid && (openAccountForm.get('fullName')?.touched || openAccountForm.get('fullName')?.dirty)" class="text-danger">
-          กรุณากรอกชื่อ-นามสกุล
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="birthDate">วันเกิด</label>
-        <input type="date" id="birthDate" formControlName="birthDate" class="form-control" required>
-      </div>
-
-      <div class="form-group">
-        <label for="idCardNumber">หมายเลขบัตรประชาชน</label>
-        <input type="text" id="idCardNumber" formControlName="idCardNumber" class="form-control" required>
-        <div *ngIf="openAccountForm.get('idCardNumber')?.invalid && (openAccountForm.get('idCardNumber')?.touched || openAccountForm.get('idCardNumber')?.dirty)" class="text-danger">
-          กรุณากรอกหมายเลขบัตรประชาชนที่ถูกต้อง
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="address">ที่อยู่</label>
-        <input type="text" id="address" formControlName="address" class="form-control" required>
-      </div>
-
-      <div class="form-group">
-        <label for="phoneNumber">หมายเลขโทรศัพท์</label>
-        <input type="text" id="phoneNumber" formControlName="phoneNumber" class="form-control" required>
-        <div *ngIf="openAccountForm.get('phoneNumber')?.invalid && (openAccountForm.get('phoneNumber')?.touched || openAccountForm.get('phoneNumber')?.dirty)" class="text-danger">
-          กรุณากรอกหมายเลขโทรศัพท์ที่ถูกต้อง
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="email">อีเมล</label>
-        <input type="email" id="email" formControlName="email" class="form-control" required>
-        <div *ngIf="openAccountForm.get('email')?.invalid && (openAccountForm.get('email')?.touched || openAccountForm.get('email')?.dirty)" class="text-danger">
-          กรุณากรอกอีเมลที่ถูกต้อง
-        </div>
-      </div>
-
-      <div class="text-center mt-4">
-        <button type="submit" class="btn btn-primary" [disabled]="openAccountForm.invalid">เปิดบัญชีออมทรัพย์</button>
-      </div>
-    </div>
-  </div>
-</form>
+<div class="container mt-5">
+  <h2>บัญชีรวม</h2>
+  <h3>ยอดเงินคงเหลือ: {{ totalBalance }} บาท</h3>
+  <h3 class="mt-5">ประวัติการทำธุรกรรม</h3>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let transaction of transactionHistory">
+      {{ transaction.date }}: {{ transaction.amount }} บาท ({{ transaction.transactionType }})
+    </li>
+  </ul>
+</div>

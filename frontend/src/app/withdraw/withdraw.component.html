@@ -1,23 +1,20 @@
 <div class="container mt-5">
   <h2>ถอนเงิน</h2>
-  
   <form (ngSubmit)="onWithdraw()">
     <div class="mb-3">
-      <label for="amount" class="form-label">จำนวนเงินถอน</label>
+      <label for="amount" class="form-label">จำนวนเงิน</label>
       <input type="number" id="amount" [(ngModel)]="withdrawAmount" name="withdrawAmount" class="form-control" required />
     </div>
-    <button type="submit" class="btn btn-danger">ถอนเงิน</button>
+    <button type="submit" class="btn btn-primary">ถอนเงิน</button>
   </form>
 
   <div *ngIf="message" class="alert alert-info mt-3">{{ message }}</div>
 
   <h3 class="mt-5">ประวัติการถอนเงิน</h3>
   <ul class="list-group">
-    <li class="list-group-item" *ngFor="let withdraw of  WithdrawHistory">
+    <li class="list-group-item" *ngFor="let withdraw of withdrawHistory">
       {{ withdraw.date }}: {{ withdraw.amount }} บาท
     </li>
   </ul>
   <h3 class="mt-5">ไปที่หน้า <a routerLink="/deposit">ฝากเงิน</a></h3>
 </div>
-
-

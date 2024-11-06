@@ -1,0 +1,26 @@
+<div class="container mt-5">
+  <h2>คำร้องเรียนทั้งหมด</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>วันที่</th>
+        <th>คำร้องเรียน</th>
+        <th>ชื่อ</th>
+        <th>อีเมล</th>
+        <th>การจัดการ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let complaint of complaints">
+        <td>{{ complaint.complaintDate }}</td>
+        <td>{{ complaint.complaintText }}</td>
+        <td>{{ complaint.name }}</td>
+        <td>{{ complaint.email }}</td>
+        <td>
+          <button class="btn btn-danger" (click)="deleteComplaint(complaint.complaintID)">ลบ</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+</div>

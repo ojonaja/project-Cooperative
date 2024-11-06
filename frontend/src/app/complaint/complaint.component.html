@@ -1,40 +1,17 @@
-<div class="complaint-container">
-    <div class="card">
-        <h2>Submit a Complaint</h2>
-        <form [formGroup]="complaintForm" (ngSubmit)="onSubmit()">
-            <div>
-                <label for="name">Name:</label>
-                <input id="name" formControlName="name" type="text" placeholder="Your name" required />
-            </div>
-
-            <div>
-                <label for="email">Email:</label>
-                <input id="email" formControlName="email" type="email" placeholder="Your email" required />
-            </div>
-
-            <div>
-                <label for="complaint">Complaint:</label>
-                <textarea id="complaint" formControlName="complaint" placeholder="Describe your complaint" required></textarea>
-            </div>
-
-            <div *ngIf="name?.invalid && name?.touched" class="error">
-                Please enter your name.
-            </div>
-            <div *ngIf="email?.invalid && email?.touched" class="error">
-                Please enter a valid email.
-            </div>
-            <div *ngIf="complaint?.invalid && complaint?.touched" class="error">
-                Please enter your complaint.
-            </div>
-
-            <button type="submit" [disabled]="complaintForm.invalid || isLoading">
-                {{ isLoading ? 'Submitting...' : 'Submit Complaint' }}
-            </button>
-        </form>
-
-        <p *ngIf="message" [ngClass]="{'success': isSuccess, 'error': !isSuccess}">
-            {{ message }}
-        </p>
+<div class="container mt-5">
+  <h2>เขียนคำร้องเรียน</h2>
+  <div *ngIf="name && email">
+    <p><strong>ชื่อ:</strong> {{ name }}</p>
+    <p><strong>อีเมล:</strong> {{ email }}</p>
+  </div>
+  <form [formGroup]="complaintForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="complaint" class="form-label">คำร้องเรียน</label>
+      <textarea id="complaint" formControlName="complaint" class="form-control" rows="5" required></textarea>
     </div>
+    <button type="submit" class="btn btn-primary">ส่งคำร้องเรียน</button>
+  </form>
+
+  <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
 </div>
- 

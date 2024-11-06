@@ -9,6 +9,11 @@ const sqlConfig = {
     server: process.env.HOST, // ชื่อโฮสต์ของ SQL Server
     database: process.env.DB, // ชื่อฐานข้อมูล
     port: parseInt(process.env.SQL_PORT), // พอร์ต SQL Server
+    pool: {
+        max: 10,
+        min: 0,
+        idleTimeoutMillis: 30000
+      },
     options: {
         encrypt: false, // ใช้ true สำหรับ Azure SQL Database1
         trustServerCertificate: true, // ใช้ true ในการพัฒนาเพื่อข้ามการตรวจสอบใบรับรอง

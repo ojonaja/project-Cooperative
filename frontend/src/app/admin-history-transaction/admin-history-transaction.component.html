@@ -1,0 +1,25 @@
+<div class="container mt-5">
+  <h2>ประวัติการทำธุรกรรมทั้งหมด</h2>
+  <div class="mb-3">
+    <label for="searchQuery" class="form-label">ค้นหา</label>
+    <input type="text" id="searchQuery" [(ngModel)]="searchQuery" (input)="onSearch()" class="form-control" placeholder="ค้นหาด้วยชื่อผู้ใช้, ประเภทการทำธุรกรรม หรือวันที่">
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>วันที่</th>
+        <th>จำนวนเงิน</th>
+        <th>ประเภทการทำธุรกรรม</th>
+        <th>ผู้ใช้</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let transaction of filteredHistory">
+        <td>{{ transaction.date }}</td>
+        <td>{{ transaction.amount }}</td>
+        <td>{{ transaction.transactionType }}</td>
+        <td>{{ transaction.user }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

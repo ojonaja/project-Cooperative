@@ -1,39 +1,50 @@
-const express = require('express');
 const sql = require('mssql');
-const cors = require('cors');
-const bodyParser = require('body-parser');
+const { sqlConfig } = require('../config/dbconfig');
 
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
+const getProfile = async (req, res) => {
+  const { idCard } = req.user;
 
-// การตั้งค่าการเชื่อมต่อฐานข้อมูล MSSQL
-const dbConfig = {
-  user: 'your_username',
-  password: 'your_password',
-  server: 'your_server_address',
-  database: 'your_database_name',
-  options: {
-    encrypt: true,
-    enableArithAbort: true,
-  },
+  try {
+    let pool = await sql.connect(sqlConfig);
+    let result = await pool.request()
+      .input('idCard', sql.NVarChar, idCard)
+      .query(`SELECT name, address, age, idCard, phone, email FROM Members WHERE idCard = @idCard`);
+
+    if (result.recordset.length > 0) {
+      res.status(200).json(result.recordset[0]);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (err) {
+    console.error('Database error:', err);
+    res.status(500).json({ message: 'Internal server error' });
+  } finally {
+    sql.close();
+  }
 };
 
-sql.connect(dbConfig, (err) => {
-  if (err) console.log(err);
-  else console.log("Connected to MSSQL");
-});
+const updateProfile = async (req, res) => {
+  const { idCard } = req.user;
+  const { name, address, age, phone, email } = req.body;
 
-// API สำหรับดึงข้อมูลโปรไฟล์ตาม ID
-app.get('/api/profile/:id', async (req, res) => {
   try {
-    const request = new sql.Request();
-    const result = await request.query(`SELECT * FROM Users WHERE id = ${req.params.id}`);
-    res.json(result.recordset[0]);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
+    let pool = await sql.connect(sqlConfig);
+    await pool.request()
+      .input('idCard', sql.NVarChar, idCard)
+      .input('name', sql.NVarChar, name)
+      .input('address', sql.NVarChar, address)
+      .input('age', sql.Int, age)
+      .input('phone', sql.NVarChar, phone)
+      .input('email', sql.NVarChar, email)
+      .query(`UPDATE Members SET name = @name, address = @address, age = @age, phone = @phone, email = @email WHERE idCard = @idCard`);
 
-// ตั้งค่าให้ API Server ทำงานบนพอร์ต 3000
-app.listen(3000, () => console.log('Server running on port 3000'));
+    res.status(200).json({ message: 'Profile updated successfully' });
+  } catch (err) {
+    console.error('Database error:', err);
+    res.status(500).json({ message: 'Internal server error' });
+  } finally {
+    sql.close();
+  }
+};
+
+module.exports = { getProfile, updateProfile };

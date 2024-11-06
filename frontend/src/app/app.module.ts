@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
-import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS, provideHttpClient, withFetch } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,9 +19,16 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ComplaintComponent } from './complaint/complaint.component';
-import { ProfileService } from './services/profile.service'; // เพิ่มการ import ProfileService
-import { BaseChartDirective } from 'ng2-charts';
-
+import { ProfileService } from './services/profile.service';
+import { AuthService } from './services/auth.service';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
+import { AdminComplaintsComponent } from './admin-complaints/admin-complaints.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { AdminNavbarComponent } from './admin-navbar/admin-navbar.component';
+import { AdminHistoryTransactionComponent } from './admin-history-transaction/admin-history-transaction.component';
 
 @NgModule({
   declarations: [
@@ -40,20 +47,27 @@ import { BaseChartDirective } from 'ng2-charts';
     DashboardComponent,
     RegisterComponent,
     ForgotPasswordComponent,
-    ComplaintComponent
+    ComplaintComponent,
+    AdminUsersComponent,
+    AdminComplaintsComponent,
+    NavbarComponent,
+    AdminNavbarComponent,
+    AdminHistoryTransactionComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    BaseChartDirective,
-    
+    AppRoutingModule
   ],
   providers: [
-    provideHttpClient(withFetch()), // For server-side rendering
-    provideClientHydration() // For client-side hydration
+    ProfileService,
+    AuthService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    AuthGuard,
+    AdminGuard,
+    provideHttpClient(withFetch())
   ],
   bootstrap: [AppComponent]
 })

@@ -1,22 +1,36 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-interest-calculator',
+  selector: 'app-interest',
   templateUrl: './interest.component.html',
   styleUrls: ['./interest.component.css']
 })
 export class InterestComponent {
-  principal: number = 0; // เงินต้น
-  rate: number = 0; // อัตราดอกเบี้ย
-  time: number = 0; // ระยะเวลา
-  interest: number | null = null; // ดอกเบี้ยที่คำนวณได้
+  interestForm: FormGroup;
+  interestResult: number | null = null;
+  errorMessage: string | null = null;
 
-  onCalculate() {
-    if (this.principal > 0 && this.rate > 0 && this.time > 0) {
-      // สูตรคำนวณดอกเบี้ย
-      this.interest = (this.principal * this.rate * this.time) / 100;
+  constructor(private fb: FormBuilder) {
+    this.interestForm = this.fb.group({
+      principal: ['', [Validators.required, Validators.min(0)]],
+      rate: ['', [Validators.required, Validators.min(0), Validators.max(100)]],
+      time: ['', [Validators.required, Validators.min(0)]]
+    });
+  }
+
+  onSubmit() {
+    if (this.interestForm.valid) {
+      const { principal, rate, time } = this.interestForm.value;
+      this.interestResult = this.calculateInterest(principal, rate, time);
+      this.errorMessage = null;
     } else {
-      this.interest = null; // ถ้าข้อมูลไม่ถูกต้อง
+      this.errorMessage = 'Please fill out the form correctly';
+      this.interestResult = null;
     }
+  }
+
+  calculateInterest(principal: number, rate: number, time: number): number {
+    return principal * (rate / 100) * time;
   }
 }
