@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-savings',
@@ -7,29 +7,41 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./savings.component.css']
 })
 export class SavingsComponent implements OnInit {
-  openAccountForm!: FormGroup;
-  successMessage: string | null = null; // เพิ่มตัวแปรสำหรับข้อความสำเร็จ
+  transactionHistory: { date: string; amount: number; transactionType: string }[] = [];
+  totalBalance: number = 0;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.openAccountForm = this.fb.group({
-      fullName: ['', Validators.required],
-      birthDate: ['', Validators.required],
-      idCardNumber: ['', [Validators.required, Validators.pattern('^[0-9]{13}$')]],
-      address: ['', Validators.required],
-      phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-      email: ['', [Validators.required, Validators.email]],
-      initialDeposit: [0, [Validators.required, Validators.min(0)]]
-    });
+    this.fetchTransactionHistory();
   }
 
-  onSubmit() {
-    if (this.openAccountForm.valid) {
-      console.log('Form Submitted', this.openAccountForm.value);
-      this.successMessage = 'เปิดบัญชีออมทรัพย์สำเร็จ!'; // แสดงข้อความสำเร็จ
-      // ที่นี่สามารถส่งข้อมูลไปยังเซิร์ฟเวอร์ได้
-      this.openAccountForm.reset(); // ล้างฟอร์มหลังจากส่ง
-    }
+  fetchTransactionHistory() {
+    this.http.get<{ date: string; amount: number; transactionType: string }[]>('http://localhost:3000/api/transactions/all')
+      .subscribe(
+        data => {
+          this.transactionHistory = data.map(transaction => ({
+            ...transaction,
+            date: this.formatDate(transaction.date)
+          }));
+          this.calculateTotalBalance();
+        },
+        error => {
+          console.error('Error fetching transaction history:', error);
+        }
+      );
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return `${date.getFullYear()}-${this.pad(date.getMonth() + 1)}-${this.pad(date.getDate())} ${this.pad(date.getHours())}:${this.pad(date.getMinutes())}:${this.pad(date.getSeconds())}`;
+  }
+
+  pad(number: number): string {
+    return number < 10 ? '0' + number : number.toString();
+  }
+
+  calculateTotalBalance() {
+    this.totalBalance = this.transactionHistory.reduce((acc, transaction) => acc + transaction.amount, 0);
   }
 }

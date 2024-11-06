@@ -1,16 +1,15 @@
-// app.js
 const express = require('express');
+const path = require('path');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const path = require('path');
-require('dotenv').config();  // โหลด environment variables
+const profileRoutes = require('./routes/profileRoutes');
+const accountBookRoutes = require('./routes/accountBookRoutes');
+const authRoutes = require('./routes/authRoutes');
+const complaintRoutes = require('./routes/complaintRoutes'); // เพิ่มการ import complaintRoutes
+const userRoutes = require('./routes/userRoutes');
+const transactionRoutes = require('./routes/transactionRoutes');
 
-// นำเข้า routes
-const indexRouter = require('./routes/indexRoutes');
-const registerRoutes = require('./routes/registerRoutes');
-
-// สร้างแอป Express
 const app = express();
 
 // Middleware
@@ -22,8 +21,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
 // Routes
-app.use('/', indexRouter);
-app.use('/api/register', registerRoutes); // ให้แน่ใจว่ากำหนดเป็น /api/register
+app.use('/api/auth', authRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/accountbook', accountBookRoutes);
+app.use('/api/complaints', complaintRoutes); // เพิ่มเส้นทางสำหรับ complaintRoutes
+app.use('/api/users', userRoutes);
+app.use('/api/transactions', transactionRoutes);
 
 // จัดการข้อผิดพลาด 404
 app.use((req, res, next) => {

@@ -1,90 +1,29 @@
-<div class="profile-container">
-    <div class="profile-header">
-        <h3>ข้อมูลของฉัน</h3>
-        <p>ID : {{ userId }}</p>
+<div class="container mt-5">
+  <h2>โปรไฟล์ของฉัน</h2>
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="name" class="form-label">ชื่อ</label>
+      <input type="text" id="name" formControlName="name" class="form-control" />
     </div>
-
-    <form class="profile-form">
-        <label for="name">ชื่อ :</label>
-        <input type="text" id="name" [(ngModel)]="user.name" name="name" readonly>
-
-        <label for="lastname">นามสกุล :</label>
-        <input type="text" id="lastname" [(ngModel)]="user.lastname" name="lastname" readonly>
-
-        <label for="id">เลขบัตรประชาชน :</label>
-        <input type="text" id="id" [(ngModel)]="user.citizenId" name="citizenId" readonly>
-
-        <label for="account">เลขที่บัญชี :</label>
-        <input type="text" id="account" [(ngModel)]="user.accountNumber" name="accountNumber" readonly>
-
-        <label for="dob">วัน/เดือน/ปีเกิด :</label>
-        <input type="date" id="dob" [(ngModel)]="user.dob" name="dob" readonly>
-
-        <label for="phone">เบอร์โทรศัพท์ :</label>
-        <input type="text" id="phone" [(ngModel)]="user.phone" name="phone" readonly>
-
-        <label for="email">อีเมล์ :</label>
-        <input type="email" id="email" [(ngModel)]="user.email" name="email" readonly>
-
-        <label for="username">username :</label>
-        <input type="text" id="username" [(ngModel)]="user.username" name="username" readonly>
-
-        <label for="password">password :</label>
-        <input type="password" id="password" [(ngModel)]="user.password" name="password" readonly>
-
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">MODIFY</button>
-
-    </form>
-
-    <a routerLink="/home" class="back-link">‹ back</a>
-
-
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">แก้ไขข้อมูล</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <label for="edit-name">ชื่อ :</label>
-                        <input type="text" id="edit-name" [(ngModel)]="editUser.name" name="edit-name"
-                            placeholder="ชื่อ" />
-
-                        <label for="edit-lastname">นามสกุล :</label>
-                        <input type="text" id="edit-lastname" [(ngModel)]="editUser.lastname" name="edit-lastname"
-                            placeholder="นามสกุล" />
-
-                        <label for="edit-id">เลขบัตรประชาชน :</label>
-                        <input type="text" id="edit-id" [(ngModel)]="user.citizenId" name="edit-id" readonly />
-
-                        <label for="edit-dob">วัน/เดือน/ปีเกิด :</label>
-                        <input type="date" id="edit-dob" [(ngModel)]="editUser.dob" name="edit-dob"
-                            placeholder="วัน/เดือน/ปีเกิด" />
-
-                        <label for="edit-phone">เบอร์โทรศัพท์ :</label>
-                        <input type="text" id="edit-phone" [(ngModel)]="editUser.phone" name="edit-phone"
-                            placeholder="เบอร์โทรศัพท์" />
-
-                        <label for="edit-email">อีเมล์ :</label>
-                        <input type="email" id="edit-email" [(ngModel)]="editUser.email" name="edit-email"
-                            placeholder="อีเมล์" />
-
-                        <label for="edit-username">username :</label>
-                        <input type="text" id="edit-username" [(ngModel)]="editUser.username" name="edit-username"
-                            placeholder="username" />
-
-                        <label for="edit-password">password :</label>
-                        <input type="password" id="edit-password" [(ngModel)]="editUser.password" name="edit-password"
-                            placeholder="password" />
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" (click)="saveChanges()">Save changes</button>
-                </div>
-            </div>
-        </div>
+    <div class="mb-3">
+      <label for="address" class="form-label">ที่อยู่</label>
+      <input type="text" id="address" formControlName="address" class="form-control" />
     </div>
+    <div class="mb-3">
+      <label for="age" class="form-label">อายุ</label>
+      <input type="number" id="age" formControlName="age" class="form-control" />
+    </div>
+    <div class="mb-3">
+      <label for="phone" class="form-label">โทรศัพท์</label>
+      <input type="text" id="phone" formControlName="phone" class="form-control" />
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">อีเมล</label>
+      <input type="email" id="email" formControlName="email" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">บันทึก</button>
+  </form>
+
+  <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
 </div>

@@ -1,0 +1,49 @@
+<div class="container mt-5">
+  <h2>ผู้ใช้ทั้งหมดในระบบ</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ชื่อ</th>
+        <th>อีเมล</th>
+        <th>บทบาท</th>
+        <th>การกระทำ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+        <td>
+          <button class="btn btn-primary" (click)="selectUser(user)">แก้ไข</button>
+          <button class="btn btn-danger" (click)="deleteUser(user.idCard)" *ngIf="isAdmin">ลบ</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+
+  <div *ngIf="selectedUser" class="mt-5">
+    <h3>แก้ไขข้อมูลผู้ใช้</h3>
+    <form (ngSubmit)="updateUser()">
+      <div class="mb-3">
+        <label for="name" class="form-label">ชื่อ</label>
+        <input type="text" id="name" [(ngModel)]="selectedUser.name" name="name" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">อีเมล</label>
+        <input type="email" id="email" [(ngModel)]="selectedUser.email" name="email" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="role" class="form-label">บทบาท</label>
+        <select id="role" [(ngModel)]="selectedUser.role" name="role" class="form-control" required [disabled]="!isAdmin">
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-success">บันทึก</button>
+      <button type="button" class="btn btn-secondary" (click)="selectedUser = null">ยกเลิก</button>
+    </form>
+  </div>
+</div>

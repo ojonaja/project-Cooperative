@@ -1,7 +1,5 @@
-// src/app/app-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
@@ -11,29 +9,39 @@ import { DepositComponent } from './deposit/deposit.component';
 import { WithdrawComponent } from './withdraw/withdraw.component';
 import { InterestComponent } from './interest/interest.component';
 import { ReportComponent } from './report/report.component';
+import { TransactionHistoryComponent } from './transaction-history/transaction-history.component';
+import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { authGuard } from './auth.guard'; // Ensure you have AuthGuard implemented
 import { RegisterComponent } from './register/register.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ComplaintComponent } from './complaint/complaint.component';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
+import { AdminComplaintsComponent } from './admin-complaints/admin-complaints.component';
+import { AdminHistoryTransactionComponent } from './admin-history-transaction/admin-history-transaction.component';
+import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect to Login on root
-  { path: 'login', component: LoginComponent }, // Login page
-  { path: 'home', component: HomeComponent, canActivate: [authGuard] }, // Home page protected by AuthGuard
-  { path: 'about', component: AboutComponent }, // About page
-  { path: 'contact', component: ContactComponent }, // Contact page
-  { path: 'profile', component: ProfileComponent }, // Profile page
-  { path: 'savings', component: SavingsComponent }, // Savings page
-  { path: 'deposit', component: DepositComponent }, // Deposit page
-  { path: 'withdraw', component: WithdrawComponent }, // Withdraw page
-  { path: 'interest', component: InterestComponent }, // Interest page
-  { path: 'report', component: ReportComponent }, // Report page
-  { path: 'dashboard', component: DashboardComponent }, // Dashboard page
-  { path: 'register', component: RegisterComponent }, // Register page
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'complaint', component: ComplaintComponent },
-
+  { path: '', component: LoginComponent, canActivate: [AuthGuard] },
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'about', component: AboutComponent, canActivate: [AuthGuard] },
+  { path: 'contact', component: ContactComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'savings', component: SavingsComponent, canActivate: [AuthGuard] },
+  { path: 'deposit', component: DepositComponent, canActivate: [AuthGuard] },
+  { path: 'withdraw', component: WithdrawComponent, canActivate: [AuthGuard] },
+  { path: 'interest', component: InterestComponent, canActivate: [AuthGuard] },
+  { path: 'report', component: ReportComponent, canActivate: [AuthGuard] },
+  { path: 'transaction-history', component: TransactionHistoryComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'complaint', component: ComplaintComponent, canActivate: [AuthGuard] },
+  { path: 'admin/users', component: AdminUsersComponent, canActivate: [AdminGuard] },
+  { path: 'admin/complaints', component: AdminComplaintsComponent, canActivate: [AdminGuard] },
+  { path: 'admin/history-transaction', component: AdminHistoryTransactionComponent, canActivate: [AdminGuard] },
+  { path: '**', redirectTo: 'login' }
 ];
 
 @NgModule({

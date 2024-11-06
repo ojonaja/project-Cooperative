@@ -1,52 +1,74 @@
-// auth.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api'; // แก้ URL นี้ให้เป็น API ของคุณจริงๆ
+  private apiUrl = 'http://localhost:3000/api/auth'; // Adjust the URL as needed
 
   constructor(private http: HttpClient) {}
 
-  // สำหรับเข้าสู่ระบบ
-  login(username: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, { username, password })
-      .pipe(
-        catchError(this.handleError)
-      );
+  login(email: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/login`, { email, password });
   }
 
-  // สำหรับลงทะเบียนผู้ใช้ใหม่
-  register(username: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/register`, { username, password })
-      .pipe(
-        catchError(this.handleError)
-      );
+  register(memberData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/register`, memberData);
   }
 
-  // สำหรับการส่งลิงก์รีเซ็ตรหัสผ่านไปยังอีเมลของผู้ใช้
-  sendResetPassword(email: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/forgot-password`, { email })
-      .pipe(
-        catchError(this.handleError)
-      );
+  resetPassword(email: string, idCard: string, newPassword: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/reset-password`, { email, idCard, newPassword });
   }
 
-  // ฟังก์ชันจัดการข้อผิดพลาด
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    let errorMessage = 'An unknown error occurred!';
-    if (error.error instanceof ErrorEvent) {
-      // Error เกิดจากฝั่ง client เช่น อินเตอร์เน็ตมีปัญหา
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // Error เกิดจากฝั่ง server เช่น API ไม่ตอบสนอง
-      errorMessage = `Server returned code: ${error.status}, error message is: ${error.message}`;
+  setToken(token: string): void {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('token', token);
     }
-    console.error(errorMessage);
-    return throwError(errorMessage);
+  }
+
+  getToken(): string | null {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('token');
+    }
+    return null;
+  }
+
+  getUserIdCard(): string | null {
+    const token = this.getToken();
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.idCard;
+    }
+    return null;
+  }
+
+  getUserName(): string | null {
+    const token = this.getToken();
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.name;
+    }
+    return null;
+  }
+
+  getUserRole(): string | null {
+    const token = this.getToken();
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.role;
+    }
+    return null;
+  }
+
+  isLoggedIn(): boolean {
+    return this.getToken() !== null;
+  }
+
+  logout(): void {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+    }
   }
 }
