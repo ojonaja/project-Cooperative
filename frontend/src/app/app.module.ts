@@ -20,6 +20,9 @@ import { RegisterComponent } from './register/register.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ComplaintComponent } from './complaint/complaint.component';
 import { ProfileService } from './services/profile.service'; // เพิ่มการ import ProfileService
+import { BaseChartDirective } from 'ng2-charts';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +47,9 @@ import { ProfileService } from './services/profile.service'; // เพิ่ม�
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BaseChartDirective,
+    
   ],
   providers: [
     provideHttpClient(withFetch()), // For server-side rendering

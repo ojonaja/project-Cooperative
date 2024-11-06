@@ -1,1 +1,14 @@
-<p>report works!</p>
+<div style="display: flex; flex-direction: column; align-items: center;">
+  <h2>รายงานฝาก-ถอน</h2>
+
+  <div style="width: 400px;">
+    <canvas baseChart
+            [datasets]="chartData"
+            [labels]="chartLabels"
+            [options]="chartOptions"
+            [chartType]="'pie'">
+    </canvas>
+  </div>
+
+  <p>ดอกเบี้ยที่ได้ต่อปี: {{ annualInterest | currency }}</p>
+</div>
